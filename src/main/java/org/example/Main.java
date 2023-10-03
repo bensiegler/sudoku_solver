@@ -1,68 +1,29 @@
-import java.util.Arrays;
-import java.util.ArrayList;
+package org.example;
 
-public class SudokuSolver {
+public class Main {
 
-    int[][] grid;
-    Integer[] possibles = {1,2,3,4,5,6,7,8,9};
+    static int[][] puzzle =    {{0, 0, 6, 1, 0, 0, 0, 0, 8},
+                                {0, 8, 0, 0, 9, 0, 0, 3, 0},
+                                {2, 0, 0, 0, 0, 5, 4, 0, 0},
+                                {4, 0, 0, 0, 0, 1, 8, 0, 0},
+                                {0, 3, 0, 0, 7, 0, 0, 4, 0},
+                                {0, 0, 7, 9, 0, 0, 0, 0, 3},
+                                {0, 0, 8, 4, 0, 0, 0, 0, 6},
+                                {0, 2, 0, 0, 5, 0, 0, 8, 0},
+                                {1, 0, 0, 0, 0, 2, 5, 0, 0}};
 
-    public SudokuSolver(int[][] grid) {
-        this.grid = grid;
+    int[][] solution = {{3, 4, 6, 1, 2, 7, 9, 5, 8},
+                        {7, 8, 5, 6, 9, 4, 1, 3, 2},
+                        {2, 1, 9, 3, 8, 5, 4, 6, 7},
+                        {4, 6, 2, 5, 3, 1, 8, 7, 9},
+                        {9, 3, 1, 2, 7, 8, 6, 4, 5},
+                        {8, 5, 7, 9, 4, 6, 2, 1, 3},
+                        {5, 9, 8, 4, 1, 3, 7, 2, 6},
+                        {6, 2, 4, 7, 5, 9, 3, 8, 1},
+                        {1, 7, 3, 8, 6, 2, 5, 9, 4}};
+
+    public static void main(String[] args) {
+        SudokuSolver solver = new SudokuSolver(puzzle);
+        solver.solve();
     }
-
-    public int[][] solve() {
-        for (int i = 0; i < 50; i++) {
-            for (int x = 0; x < 9; x++) {
-                for (int y = 0; y < 9; y++) {
-                    if(grid[x][y] == 0) {
-                        ArrayList<Integer> possible = findPossible(x, y);
-                        if(possible.size() == 1) {
-                            grid[x][y] = possible.get(0);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (int[] row: grid) {
-            for (int val: row) {
-                System.out.print(val);
-            }
-            System.out.println();
-        }
-        return null;
-    }
-
-    public ArrayList<Integer> findPossible(int x, int y) {
-        ArrayList<Integer> possible = new ArrayList<Integer>(Arrays.asList(possibles));
-        //search row
-        int[] row = grid[x];
-        for (int i: row) {
-            if(possible.contains(i)) {
-                possible.remove(possible.indexOf(i));
-            }
-        }
-
-        //search column
-        for(int i = 0; i < 9; i++) {
-            if(possible.contains(grid[i][y])) {
-                possible.remove(possible.indexOf(grid[i][y]));
-            }
-        }
-
-        //search square
-        int searchFromX = x / 3;
-        int searchFromY = y / 3;
-        for (int i = searchFromY; i < searchFromY + 3; i++) {
-            for (int j = searchFromX; j < searchFromX + 3; j++) {
-                if(possible.contains(grid[i][j])) {
-                    possible.remove(possible.indexOf(grid[i][j]));
-                }
-            }
-        }
-        return possible;
-    }
-
-
-
 }
